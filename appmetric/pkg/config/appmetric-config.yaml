@@ -5,10 +5,10 @@ exporters:
         metrics:
           RESPONSE_TIME:
             queries:
-              used: '1000.0*rate(istio_turbo_pod_latency_time_ms_sum{response_code="200"}[3m])/rate(istio_turbo_pod_latency_time_ms_count{response_code="200"}[3m]) >= 0'
+              used: '1000*(avg without (request_path) (rate(istio_turbo_pod_latency_time_ms_sum{response_code="200"}[3m])/rate(istio_turbo_pod_latency_time_ms_count{response_code="200"}[3m]) > 0))'
           TRANSACTION:
             queries:
-              used: 'rate(istio_turbo_pod_request_count{response_code="200"}[3m]) > 0'
+              used: 'sum without (request_path) (rate(istio_turbo_pod_request_count{response_code="200"}[3m]) > 0)'
         attributes:
           ip:
             label: destination_ip
